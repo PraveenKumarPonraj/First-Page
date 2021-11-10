@@ -4,6 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AgmCoreModule } from '@agm/core';
+
+import { ReactiveFormsModule } from '@angular/forms';
+
+
 @NgModule({
   declarations: [
     AppComponent
@@ -11,8 +15,9 @@ import { AgmCoreModule } from '@agm/core';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyARMJaIwXaV8pnncIPg2jssrJ_YfnxXM_0',
+      apiKey: 'AIzaSyDaWfNYBXfHDwyCvTcractLpMOSjLnujn8',
       libraries:['places']
     })
   ],

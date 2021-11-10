@@ -1,5 +1,16 @@
 import { Component,OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
+import { FormControl } from '@angular/forms';
+// just an interface for type safety.
+interface marker {
+	lat: number;
+	lng: number;
+	label?: string;
+  draggable: boolean;
+  content?:string;
+  isShown:boolean;
+  icon:string;
+}
 
 
 @Component({
@@ -14,6 +25,15 @@ export class AppComponent implements OnInit{
   zoom: number;
   address: string;
   private geoCoder;
+  value: string;
+  
+
+  // Radius
+  radius =50000;
+  radiusLat = 0;
+  radiusLong = 0;
+ 
+  markers: marker[] = []
  
   @ViewChild('search')
   public searchElementRef: ElementRef;
@@ -44,10 +64,17 @@ export class AppComponent implements OnInit{
           //set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
+          this.radiusLat = this.latitude;
+          this.radiusLong = this.longitude;
           this.zoom = 12;
         });
       });
     });
+  }
+  
+ 
+  OnWrite(event: KeyboardEvent){
+    this.value=(<HTMLInputElement>event.target).value;
   }
  
   // Get Current Location Coordinates
@@ -57,6 +84,20 @@ export class AppComponent implements OnInit{
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
         this.zoom = 8;
+
+        for(let i=1;i<50;i++){
+          this.markers.push(
+            {
+              lat: this.latitude+Math.random(),
+              lng: this.longitude+Math.random(),
+              label: `${i}`,
+              draggable: false,
+              content: `Content no ${i}`,
+              isShown:false,
+              icon:'./assets/marker-red.png'
+            }
+          );
+        }
         this.getAddress(this.latitude, this.longitude);
       });
     }
@@ -69,6 +110,43 @@ export class AppComponent implements OnInit{
   //   this.longitude = $event.coords.lng;
   //   this.getAddress(this.latitude, this.longitude);
   // }
+  clickedMarker(label: string, index: number) {
+    console.log(`clicked the marker: ${label || index}`)
+  }
+
+  radiusDragEnd($event: any) {
+    console.log($event);
+    this.radiusLat = $event.coords.lat;
+    this.radiusLong = $event.coords.lng;
+    this.showHideMarkers();
+  }
+
+  event(type,$event) {
+    console.log(type,$event);
+    this.radius = $event;
+    this.showHideMarkers();
+  }
+
+  showHideMarkers(){
+    Object.values(this.markers).forEach(value => {
+      value.isShown = this.getDistanceBetween(value.lat,value.lng,this.radiusLat,this.radiusLong);
+    });
+  }
+
+  getDistanceBetween(lat1,long1,lat2,long2){
+    var from = new google.maps.LatLng(lat1,long1);
+    var to = new google.maps.LatLng(lat2,long2);
+
+    if(google.maps.geometry.spherical.computeDistanceBetween(from,to) <= this.radius){    
+      console.log('Radius',this.radius);
+      console.log('Distance Between',google.maps.geometry.spherical.computeDistanceBetween(
+        from,to
+      ));
+      return true;
+    }else{
+      return false;
+    }
+  }
  
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
