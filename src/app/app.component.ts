@@ -1,6 +1,7 @@
 import { Component,OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
-import { FormControl } from '@angular/forms';
+import { MouseEvent } from '@agm/core';
+import { PostDataService } from './post-data.service';
 // just an interface for type safety.
 interface marker {
 	lat: number;
@@ -12,12 +13,12 @@ interface marker {
   icon:string;
 }
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit{
   title: string = 'AGM project';
   latitude: number;
@@ -26,10 +27,10 @@ export class AppComponent implements OnInit{
   address: string;
   private geoCoder;
   value: string;
-  
+  myLatlng: number;
 
   // Radius
-  radius =50000;
+  radius = 3000;
   radiusLat = 0;
   radiusLong = 0;
  
@@ -38,23 +39,49 @@ export class AppComponent implements OnInit{
   @ViewChild('search')
   public searchElementRef: ElementRef;
 
+  // @ViewChild('hello')
+  // public searchElementReff: ElementRef;
+
+  public dirs: Array<any> = [
+    {
+      origin:'ccc',
+      destination:'ddd',
+      renderOptions: { polylineOptions:{ strokeColor:'#0f0'}},
+    }];
+  
+  
+    public dirss: Array<any> = [
+      {
+        origin:'ccc',
+        destination:'ddd',
+        renderOptions: { polylineOptions:{ strokeColor:'#f00'}},
+      }];
+  
+      public direction: Array<any> = [
+        {
+          origin:'eee',
+          destination:'fff',
+          renderOptions: { polylineOptions:{ strokeColor:'#00f'}},
+        }];  
+
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
+    private post:PostDataService
   ) { }
- 
- 
+
   ngOnInit() {
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
+      // this.hello();
       this.geoCoder = new google.maps.Geocoder;
- 
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
       autocomplete.addListener("place_changed", () => {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          
  
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
@@ -67,15 +94,46 @@ export class AppComponent implements OnInit{
           this.radiusLat = this.latitude;
           this.radiusLong = this.longitude;
           this.zoom = 12;
+          
         });
       });
     });
   }
-  
+
+  // hello() {
+  //   //load Places Autocomplete
+  //   this.mapsAPILoader.load().then(() => {
+  //     this.setCurrentLocation();
+  //     this.geoCoder = new google.maps.Geocoder;
  
-  OnWrite(event: KeyboardEvent){
-    this.value=(<HTMLInputElement>event.target).value;
-  }
+  //     let autocomplete = new google.maps.places.Autocomplete(this.searchElementReff.nativeElement);
+  //     autocomplete.addListener("place_changed", () => {
+  //       this.ngZone.run(() => {
+  //         //get the place result
+  //         let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+ 
+  //         //verify result
+  //         if (place.geometry === undefined || place.geometry === null) {
+  //           return;
+  //         }
+ 
+  //         //set latitude, longitude and zoom
+  //         this.latitude = place.geometry.location.lat();
+  //         this.longitude = place.geometry.location.lng();
+  //         this.radiusLat = this.latitude;
+  //         this.radiusLong = this.longitude;
+  //         this.zoom = 12;
+  //       });
+  //     });
+  //   });
+  // }
+
+  
+  // OnWrite(event: KeyboardEvent, $event:any){
+  //   this.value=(<HTMLInputElement>event.target).value;
+  //   this.radius = $event;
+  //   console.log(this.value);
+  // }
  
   // Get Current Location Coordinates
   private setCurrentLocation() {
@@ -84,6 +142,7 @@ export class AppComponent implements OnInit{
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
         this.zoom = 8;
+        this.getAddress(this.latitude,this.longitude);
 
         for(let i=1;i<50;i++){
           this.markers.push(
@@ -104,12 +163,12 @@ export class AppComponent implements OnInit{
   }
  
  
-  // markerDragEnd($event: any) {
-  //   console.log($event);
-  //   this.latitude = $event.coords.lat;
-  //   this.longitude = $event.coords.lng;
-  //   this.getAddress(this.latitude, this.longitude);
-  // }
+  markerDragEnd($event: MouseEvent) {
+    console.log($event);
+    this.latitude = $event.coords.lat;
+    this.longitude = $event.coords.lng;
+    this.getAddress(this.latitude, this.longitude);
+  }
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`)
   }
@@ -166,6 +225,7 @@ export class AppComponent implements OnInit{
     });
   }
 
+
 //   closeModal(sendData) { 
 //     this.activeModal.close(sendData); 
 //   }
@@ -179,3 +239,4 @@ export class AppComponent implements OnInit{
 //     this.activeModal.close(data);
 //   }
  }
+ 
