@@ -19,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBDBqPZg_wdYWsBAUPnW2C4kBCZJ3Idkes',
+      apiKey: 'AIzaSyCkYj-nI79H41PAaqwfl7kzK1_AKUvLQf0',
       libraries:['places']
     }),
     AgmDirectionModule,

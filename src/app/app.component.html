@@ -9,6 +9,16 @@
     <!-- <label>Enter Radius</label>
     <input type = "text" class = "form-control" (keyup)="OnWrite($event,event)"> -->
   </div>
+  <input type="number" value="" style="display:none">
+  <select id="selectid" (change)="selectChangeHandler($event)">
+    <option value="select"> Select a Road</option>
+    <option value="Highway_1">Highway_1</option>
+    <option value="Highway_2">Highway_2</option>
+    <option value="Highway_3">Highway_3</option>
+    <option value="Ritherdon">Ritherdon Road</option>
+    <option value="Beach">Beach Road</option>  
+  </select>
+<p></p>
 
   <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
    
@@ -16,29 +26,67 @@
     <div id="map_canvas" style="width:100%; height:100%"></div>
     <ng-container *ngFor="let m of markers; let i = index">
 
-       <!-- HIGHWAYS -->
-    <agm-direction *ngFor = "let dir of dirs " [origin]="{ lat: 13.077831183855729, lng: 80.24454004001466}" [destination]="{ lat: 13.097651196681047, lng:80.29344073366967}" [renderOptions]="dir.renderOptions">
+     <!-- HIGHWAYS -->
+    <!-- <agm-direction *ngFor = "let dir of dirs " [origin]="{ lat: 13.077831183855729, lng: 80.24454004001466}" [destination]="{ lat: 13.097997996790372, lng:80.29346755575982}" [renderOptions]="dir.renderOptions">
     </agm-direction>
-   
+    -->
+
+    <agm-direction *ngFor = "let dir of dirs "
+    [origin]="one" 
+    [destination]="two"
+    [renderOptions]="dir.renderOptions"
+  >
+  </agm-direction>
+
      <!-- <agm-direction *ngFor = "let dir of dirs " [origin]="{ lat: 13.081844169536542 , lng:80.27632958125916  }" [destination]="{ lat: 13.097651196681047, lng:80.29344073366967}" [renderOptions]="dir.renderOptions">
      </agm-direction> -->
    
-     <agm-direction *ngFor = "let dir of dirs " [origin]="{ lat: 13.081853313635083, lng: 80.27624240946618 }" [destination]="{ lat: 13.103962751591741, lng: 80.27348509859887 }" [renderOptions]="dir.renderOptions">
-     </agm-direction>
+     <!-- <agm-direction *ngFor = "let dir of dirs " [origin]="{ lat: 13.081853313635083, lng: 80.27624240946618 }" [destination]="{ lat: 13.103962751591741, lng: 80.27348509859887 }" [renderOptions]="dir.renderOptions">
+     </agm-direction> -->
+     <agm-direction *ngFor = "let dir of dirs "
+     [origin]="three" 
+     [destination]="four"
+     [renderOptions]="dir.renderOptions"
+   >
+   </agm-direction>
+ 
 
-     <agm-direction *ngFor = "let dir of dirs " [origin]="{ lat: 13.103962751591741, lng: 80.27348509859887 }" [destination]="{ lat:13.104404240892192 , lng:  80.28683177065697 }" [renderOptions]="dir.renderOptions">
-    </agm-direction>
+     <!-- <agm-direction *ngFor = "let dir of dirs " [origin]="{ lat: 13.103962751591741, lng: 80.27348509859887 }" [destination]="{ lat:13.104404240892192 , lng:  80.28683177065697 }" [renderOptions]="dir.renderOptions">
+    </agm-direction> -->
+
+    <agm-direction *ngFor = "let dir of dirs "
+    [origin]="five" 
+    [destination]="six"
+    [renderOptions]="dir.renderOptions"
+  >
+  </agm-direction>
+
 
     
     <!-- CITY ROADS -->
-    <agm-direction *ngFor = "let dirr of dirss " [origin]="{ lat:13.07934651164317   , lng: 80.25873429012147 }" [destination]="{ lat: 13.107017893575792 , lng: 80.26072985362855}" [renderOptions]="dirr.renderOptions">
-    </agm-direction>
+    <!-- <agm-direction *ngFor = "let dirr of dirss " [origin]="{ lat:13.07934651164317   , lng: 80.25873429012147 }" [destination]="{ lat: 13.107538400303502 , lng: 80.26059171986428}" [renderOptions]="dirr.renderOptions">
+    </agm-direction> -->
+    <agm-direction *ngFor = "let dirr of dirss"
+    [origin]="start" 
+    [destination]="end"
+    [renderOptions]="dirr.renderOptions"
+  >
+  </agm-direction>
 
     <!-- <agm-direction *ngFor = "let dirr of dirss " [origin]="{ lat: 13.085551420535321, lng: 80.28452641200867 }" [destination]="{ lat: 13.104146923260897 , lng: 80.28680360746232}" [renderOptions]="dirr.renderOptions">
     </agm-direction> -->
 
-    <agm-direction *ngFor = "let direction of direction " [origin]="{ lat: 13.085606284296366 , lng: 80.28925782871094  }" [destination]="{ lat: 13.058204235598163 , lng: 80.28221971225587}" [renderOptions]="direction.renderOptions">
-    </agm-direction>
+
+     <!-- BeachRoad -->
+    <!-- <agm-direction *ngFor = "let direction of direction " [origin]="{ lat: 13.085606284296366 , lng: 80.28925782871094  }" [destination]="{ lat: 13.058204235598163 , lng: 80.28221971225587}" [renderOptions]="direction.renderOptions">
+    </agm-direction> -->
+
+    <agm-direction *ngFor = "let direction of direction "
+    [origin]="origin" 
+    [destination]="destination"
+    [renderOptions]="direction.renderOptions"
+  >
+  </agm-direction>
 
       <!-- <agm-marker (markerClick)="clickedMarker(m.label, i)" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [iconUrl]="m.icon" *ngIf="m.isShown"> -->
 

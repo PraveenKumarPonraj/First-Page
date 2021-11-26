@@ -21,6 +21,8 @@ interface marker {
 
 export class AppComponent implements OnInit{
   title: string = 'AGM project';
+  selectRoad : string = ' ';
+  selected = 'option2';
   latitude: number;
   longitude: number;
   zoom: number;
@@ -44,25 +46,32 @@ export class AppComponent implements OnInit{
 
   public dirs: Array<any> = [
     {
-      origin:'ccc',
-      destination:'ddd',
       renderOptions: { polylineOptions:{ strokeColor:'#0f0'}},
     }];
   
   
     public dirss: Array<any> = [
       {
-        origin:'ccc',
-        destination:'ddd',
         renderOptions: { polylineOptions:{ strokeColor:'#f00'}},
       }];
   
       public direction: Array<any> = [
         {
-          origin:'eee',
-          destination:'fff',
           renderOptions: { polylineOptions:{ strokeColor:'#00f'}},
-        }];  
+        }];
+
+        public one: any;
+        public two: any;  
+      
+        public three: any;
+        public four: any;
+      
+        public five:any;
+        public six:any;
+        public origin : any;
+        public destination: any;
+        public start: any;
+        public end: any;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
@@ -99,6 +108,55 @@ export class AppComponent implements OnInit{
       });
     });
   }
+
+  highway_1(){
+    this.one = { lat: 13.077831183855729, lng: 80.24454004001466};
+    this.two = { lat: 13.097997996790372, lng:80.29346755575982}
+
+  }
+
+  highway_2(){
+    this.three = { lat: 13.081853313635083, lng: 80.27624240946618 };
+    this.four = { lat: 13.103962751591741, lng: 80.27348509859887 }
+    
+  }
+
+  highway_3(){
+    this.five = { lat: 13.103962751591741, lng: 80.27348509859887 };
+    this.six = { lat:13.104404240892192 , lng:  80.28683177065697 };
+
+  }
+
+  beach(){
+    this.origin = { lat: 13.085606284296366 , lng: 80.28925782871094  };
+    this.destination = { lat: 13.058204235598163 , lng: 80.28221971225587 };
+  }
+
+  ritherdon(){
+    this.start = { lat:13.07934651164317   , lng: 80.25873429012147 };
+    this.end ={ lat: 13.107538400303502 , lng: 80.26059171986428};
+  }
+
+  
+  selectChangeHandler(event:any){
+    this.selectRoad = event.target.value;
+    if(this.selectRoad == "Highway_1"){
+      this.highway_1();
+    }
+    if(this.selectRoad == "Highway_2"){
+      this.highway_2();
+    }
+    if(this.selectRoad == "Highway_3"){
+      this.highway_3();
+    }
+    if(this.selectRoad == "Beach"){
+      this.beach();
+    }
+    if(this.selectRoad == "Ritherdon"){
+      this.ritherdon();
+    }
+  }
+
 
   // hello() {
   //   //load Places Autocomplete
@@ -224,7 +282,6 @@ export class AppComponent implements OnInit{
  
     });
   }
-
 
 //   closeModal(sendData) { 
 //     this.activeModal.close(sendData); 
