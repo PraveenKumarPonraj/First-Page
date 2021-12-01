@@ -10,14 +10,20 @@
     <input type = "text" class = "form-control" (keyup)="OnWrite($event,event)"> -->
   </div>
   <input type="number" value="" style="display:none">
-  <select id="selectid" (change)="selectChangeHandler($event)">
+  <input type="number" value="" style="display:none">
+  <select [formControl]="selectedProfile" (change)="selectChangeHandler()" class="select-profile">
+    <option *ngFor="let prf of profiles" [ngValue]="prf">
+       {{ prf.name }}
+    </option>
+ </select>
+  <!-- <select id="selectid" (change)="selectChangeHandler($event)">
     <option value="select"> Select a Road</option>
     <option value="Highway_1">Highway_1</option>
     <option value="Highway_2">Highway_2</option>
     <option value="Highway_3">Highway_3</option>
     <option value="Ritherdon">Ritherdon Road</option>
     <option value="Beach">Beach Road</option>  
-  </select>
+  </select> -->
 <p></p>
 
   <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">

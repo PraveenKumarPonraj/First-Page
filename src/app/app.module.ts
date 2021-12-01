@@ -8,7 +8,7 @@ import { AgmCoreModule } from '@agm/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AgmDirectionModule } from 'agm-direction'; 
 import { HttpClientModule } from '@angular/common/http';
-
+import { PostDataService } from './post-data.service';
 
 @NgModule({
   declarations: [
@@ -19,13 +19,14 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCkYj-nI79H41PAaqwfl7kzK1_AKUvLQf0',
+      apiKey: 'AIzaSyCb8ixRPk3V4B_1wWMiAAeOYPUFQnvvZrI',
       libraries:['places']
     }),
     AgmDirectionModule,
-    HttpClientModule
+    HttpClientModule,
+    
   ],
-  providers: [],
+  providers: [PostDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

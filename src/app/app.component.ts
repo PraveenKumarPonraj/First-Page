@@ -2,6 +2,9 @@ import { Component,OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
 import { MouseEvent } from '@agm/core';
 import { PostDataService } from './post-data.service';
+import { FormControl } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+// import { google } from "google-maps";
 // just an interface for type safety.
 interface marker {
 	lat: number;
@@ -20,7 +23,7 @@ interface marker {
 })
 
 export class AppComponent implements OnInit{
-  title: string = 'AGM project';
+  title: string = 'my-project';
   selectRoad : string = ' ';
   selected = 'option2';
   latitude: number;
@@ -31,55 +34,73 @@ export class AppComponent implements OnInit{
   value: string;
   myLatlng: number;
 
+  profiles = [
+    {id: 'RoadType',name:'Select RoadType'},
+    {id: 'Highway_1', name: 'Highway_1'},
+    {id: 'Highway_2', name: 'Highway_2'},
+    {id: 'Highway_3', name: 'Highway_3'},
+    {id: 'Ritherdon', name: 'Ritherdon'},
+    {id: 'Beach', name: 'Beach Road'},
+  ];
+  
+  
   // Radius
   radius = 3000;
   radiusLat = 0;
   radiusLong = 0;
- 
   markers: marker[] = []
- 
   @ViewChild('search')
   public searchElementRef: ElementRef;
+  selectedProfile = new FormControl(this.profiles[0]);
 
   // @ViewChild('hello')
   // public searchElementReff: ElementRef;
+  
 
+  // HIGHWAY Road
   public dirs: Array<any> = [
     {
       renderOptions: { polylineOptions:{ strokeColor:'#0f0'}},
     }];
   
+  // Ritherdon Road
+  public dirss: Array<any> = [
+    {
+      renderOptions: { polylineOptions:{ strokeColor:'#f00'}},
+    }];
   
-    public dirss: Array<any> = [
-      {
-        renderOptions: { polylineOptions:{ strokeColor:'#f00'}},
-      }];
-  
-      public direction: Array<any> = [
-        {
-          renderOptions: { polylineOptions:{ strokeColor:'#00f'}},
-        }];
+  // Beach Road
+  public direction: Array<any> = [
+    {
+      renderOptions: { polylineOptions:{ strokeColor:'#00f'}},
+    }];
+      
+      public one: any;
+      public two: any;  
+      
+      public three: any;
+      public four: any;
+      
+      public five:any;
+      public six:any;
+      public origin : any;
+      public destination: any;
+      public start: any;
+      public end: any;
 
-        public one: any;
-        public two: any;  
-      
-        public three: any;
-        public four: any;
-      
-        public five:any;
-        public six:any;
-        public origin : any;
-        public destination: any;
-        public start: any;
-        public end: any;
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,
-    private post:PostDataService
-  ) { }
+    private post:PostDataService,
+  ) { 
+  
+  }
 
   ngOnInit() {
+    this.post.getPostData().subscribe(data =>{
+      console.log(data);
+    })
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
@@ -138,27 +159,27 @@ export class AppComponent implements OnInit{
   }
 
   
-  selectChangeHandler(event:any){
-    this.selectRoad = event.target.value;
-    if(this.selectRoad == "Highway_1"){
-      this.highway_1();
-    }
-    if(this.selectRoad == "Highway_2"){
+  selectChangeHandler(){
+    console.log(this.selectedProfile.value.id);
+     if(this.selectedProfile.value.id == "Highway_1"){
+       this.highway_1();
+     }
+     if(this.selectedProfile.value.id == "Highway_2"){
       this.highway_2();
     }
-    if(this.selectRoad == "Highway_3"){
+    if(this.selectedProfile.value.id == "Highway_3"){
       this.highway_3();
     }
-    if(this.selectRoad == "Beach"){
+    if(this.selectedProfile.value.id == "Beach"){
       this.beach();
     }
-    if(this.selectRoad == "Ritherdon"){
+    if(this.selectedProfile.value.id == "Ritherdon"){
       this.ritherdon();
     }
-  }
-
+  }  
 
   // hello() {
+ 
   //   //load Places Autocomplete
   //   this.mapsAPILoader.load().then(() => {
   //     this.setCurrentLocation();
